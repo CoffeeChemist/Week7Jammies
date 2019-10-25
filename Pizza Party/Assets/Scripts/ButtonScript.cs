@@ -63,7 +63,7 @@ public class ButtonScript : MonoBehaviour
             if (type == 1)
             {
                 Debug.Log("Yo You loadin");
-                Application.LoadLevel(1);
+                SceneManager.LoadScene("ReadyUpMenu", LoadSceneMode.Additive);
             }
             else
             {
