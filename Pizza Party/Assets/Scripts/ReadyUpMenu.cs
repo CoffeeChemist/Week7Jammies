@@ -1,15 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Rewired;
 
 public class ReadyUpMenu : MonoBehaviour
 {
     private Player[] players;
     private bool[] ready;
+    private TimerObjects timer;
+
+
+    //UI
+    [SerializeField] private Text[] readyText;
+    [SerializeField] private Text countDownText;
 
     void Start()
     {
+        timer = GetComponent<TimerObjects>();
+
         players = new Player[4];
         ready = new bool[4];
        
@@ -22,28 +31,40 @@ public class ReadyUpMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (Player p in players)
+        if (!CheckReady())
         {
-            if (p.GetButtonDown("Action"))
+            foreach (Player p in players)
             {
-                ready[p.id] = !ready[p.id];
-                Debug.Log("At location " + p.id + " boolean is " + ready[p.id]);
+                if (p.GetButtonDown("Action"))
+                {
+                    ready[p.id] = !ready[p.id];
+                    readyText[p.id].text = ready[p.id] ? "Ready" : "Not Ready";
+                }
+            }
+
+            if (CheckReady())
+            {
+                timer.ResetClock();
+                countDownText.gameObject.SetActive(true);
+                
             }
         }
-
-        if (CheckReady())
+        else
         {
-            //MoveScene;
-            Debug.Log("change scene");
+            timer.IncrementTimer();
+            int time = (int) timer.CurrentTime;
+            countDownText.text = time.ToString();
         }
         
     }
 
     bool CheckReady()
     {
-        foreach(bool b in ready)
+        //foreach(bool b in ready)
+        for(int i = 0; i < 1; i++)
         {
-            if (!b)
+            //if (!b)
+            if(!ready[i])
             {
                 return false;
             }
