@@ -60,11 +60,9 @@ public class ReadyUpMenu : MonoBehaviour
 
     bool CheckReady()
     {
-        //foreach(bool b in ready)
-        for(int i = 0; i < 1; i++)
+        foreach(bool b in ready)
         {
-            //if (!b)
-            if(!ready[i])
+            if (!b)
             {
                 return false;
             }
