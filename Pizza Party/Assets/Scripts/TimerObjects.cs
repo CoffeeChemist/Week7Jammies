@@ -4,37 +4,36 @@ using UnityEngine;
 
 public class TimerObjects : MonoBehaviour
 {
-    [SerializeField] private int numOfTimers;
-    Timer[] timerList;
+    private float currentTime;
+    [SerializeField] private float timeLimit;
+    [SerializeField] private bool countDown;
 
-    void Start()
-    {
-        timerList = new Timer[numOfTimers];
-
-        for(int i = 0; i < numOfTimers; i++)
-        {
-            timerList[i].currentTime = 0;
-            timerList[i].timeLimit = 0;
-        }
-    }
-
-    void Update()
-    {
-        
-    }
-}
-
-public struct Timer
-{
-    public float currentTime;
-    public float timeLimit;
+    public float CurrentTime { get => currentTime; set => currentTime = value; }
 
     public bool TimeExpired()
     {
-        if (currentTime >= timeLimit)
+        if (CurrentTime >= timeLimit)
         {
             return true;
         }
         return false;
+    }
+
+    public void ResetClock()
+    {
+
+        CurrentTime = countDown ? CurrentTime = timeLimit : CurrentTime = 0;
+    }
+
+    public void IncrementTimer()
+    {
+        if (countDown)
+        {
+            CurrentTime -= Time.deltaTime;
+        }
+        else
+        {
+            CurrentTime += Time.deltaTime;
+        }
     }
 }
