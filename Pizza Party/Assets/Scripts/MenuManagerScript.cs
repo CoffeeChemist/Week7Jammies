@@ -16,9 +16,14 @@ public class MenuManagerScript : MonoBehaviour
     private bool Can_switch = true;
     private int clock = 0;
 
+    //Audio
+    private AudioSource source;
+    [SerializeField] private AudioClip[] clips;
+
 
     void Start()
     {
+       source = GetComponent<AudioSource>();
        b1_bool = GameObject.Find("Play button").GetComponent<ButtonScript>().Is_Selected;
        b2_bool = GameObject.Find("Quit button").GetComponent<ButtonScript>().Is_Selected;
        p = ReInput.players.GetPlayer(ID);
@@ -55,6 +60,7 @@ public class MenuManagerScript : MonoBehaviour
                 Can_switch = false;
             }
 
+            source.PlayOneShot(clips[0]);
         }
     }
 }
