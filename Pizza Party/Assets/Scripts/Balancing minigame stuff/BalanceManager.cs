@@ -8,30 +8,28 @@ public class BalanceManager : MonoBehaviour
 {
 
     public Vector3 Total_push;
-    
+    public Vector3[] vecpp;
+    public Vector2 gap;
 
-    
 
-    
+
+
     public GameObject[] p_topping;
  
     public Sprite[] sprites;
-  //  public Player[] p_input;
-    public Player p1_input;
-    public Player p2_input;
-    public Player p3_input;
-    public Player p4_input;
+    public Player[] p_input = new Player[4];
 
-    public Vector3[] vecpp;
-
+    private float timer = 0f;
+    public float[] tip;
     private float force;
+
     private int direction;
     public int counter = 0;
-    public int i =0;
-    private float timer = 0f;
-    public float[] tip ;
 
-    // Start is called before the first frame update
+   
+    
+    public bool[] fall;
+   
 
 
     int Sprite_Decode(int a)
@@ -50,7 +48,6 @@ public class BalanceManager : MonoBehaviour
             case 3:
                 a = 6;
                 break;
-
         }
 
         return a;
@@ -58,36 +55,36 @@ public class BalanceManager : MonoBehaviour
 
     void Start()    
     {
+
+        
         for (int i = 0; i < 4; i++)
         {
+            fall[i] = false;
+            gap = new Vector2 ( - 18 + i * 12,0);
             p_topping[i] = new GameObject();
-            p_topping[i].AddComponent<SpriteRenderer>();
+            p_topping[i].AddComponent<SpriteRenderer>();    
+            p_topping[i].AddComponent<Rigidbody2D>();
+            p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 0;
+            p_topping[i].GetComponent<Rigidbody2D>().MovePosition(gap);
             tip[i] = 0f;
             
         }
          
-
-         
-    
         force = UnityEngine.Random.value;
-        /*
-                for (int i = 0; i < 4; i++)
-                {
-                   p_input[i] =  ReInput.players.GetPlayer(i);
-                }
-        */
-        p1_input = ReInput.players.GetPlayer(0);
-        p2_input = ReInput.players.GetPlayer(1);
-        p3_input = ReInput.players.GetPlayer(2);
-        p4_input = ReInput.players.GetPlayer(3);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            p_input[i] =  ReInput.players.GetPlayer(i);
+        }
+        
 
-
+        
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
-        // Debug.Log(Random.value);
+        
         
 
         if (force > 0.5f)
@@ -101,20 +98,18 @@ public class BalanceManager : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-             vecpp[i] = new Vector3(0.0f, 0.0f, p1_input.GetAxis("HorizontalStick") * -2);
+            if (!fall[i])
+            {
+                vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -1.4f);
+                
+                tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z;
 
-            tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z;
 
-
-            p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)];
-            p_topping[i].GetComponent<Transform>().Rotate(Total_push + vecpp[1]);
+                p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)];
+                p_topping[i].GetComponent<Transform>().Rotate(Total_push + vecpp[i]);
+            }
         }
          
-
-      
-
-        Debug.Log("Rotation: " + p_topping[0].GetComponent<Transform>().rotation.eulerAngles.z);
-
 
 
         timer += Time.deltaTime;
@@ -139,7 +134,19 @@ public class BalanceManager : MonoBehaviour
                     p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)+1];
                 }
             }
+            if (tip[i] > 60 && tip[i] < 180)
+            {
+                fall[i] = true;
+                p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+
+            }
+            if (tip[i] > 180 && tip[i] < 300)
+            {
+                fall[i] = true;
+                p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+            }
         }
+
         
 
     }
