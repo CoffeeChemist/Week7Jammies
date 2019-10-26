@@ -232,7 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f81a3cde1cd0d4d8fc0a65941241aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  p_topping: []
+  p_topping:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   sprites:
   - {fileID: 0}
   - {fileID: 0}
@@ -242,6 +246,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  Log_start:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  InAir: 00000000
+  Alive: 00000000
 --- !u!4 &1201086972
 Transform:
   m_ObjectHideFlags: 0

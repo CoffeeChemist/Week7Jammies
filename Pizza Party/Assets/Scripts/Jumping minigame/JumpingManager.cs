@@ -11,6 +11,8 @@ public class JumpingManager : MonoBehaviour
     public Player[] p_input = new Player[4];
     public Sprite[] sprites = new Sprite[8];
 
+    public Vector3[] Log_start = new Vector3[4];
+
     
     private float speed;
     private float timer;
@@ -33,6 +35,11 @@ public class JumpingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            Log_start[i] = new Vector3(100, 100 - i * 10, 0);
+        }
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -55,6 +62,7 @@ public class JumpingManager : MonoBehaviour
                 logs[i]._object = new GameObject("Log");
                 logs[i]._object.AddComponent<SpriteRenderer>();
                 logs[i]._object.AddComponent<Rigidbody2D>();
+                logs[i]._object.GetComponent<Transform>().Translate(Log_start[i]);
                 logs[i]._player = i;
             }
 
