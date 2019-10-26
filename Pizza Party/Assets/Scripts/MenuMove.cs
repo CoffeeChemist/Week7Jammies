@@ -11,9 +11,13 @@ public class MenuMove : MonoBehaviour
 
     private bool hasPressedActionKey = false;
 
+    private AudioSource source;
+    [SerializeField] private AudioClip[] clips;
+
     void Start()
     {
         p = ReInput.players.GetPlayer(ID);
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -27,6 +31,7 @@ public class MenuMove : MonoBehaviour
 
         if (hasPressedActionKey)
         {
+            source.PlayOneShot(clips[0]);
             SceneManager.LoadScene(1);
         }
     }

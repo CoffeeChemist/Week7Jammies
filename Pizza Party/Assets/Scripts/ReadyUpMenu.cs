@@ -10,6 +10,10 @@ public class ReadyUpMenu : MonoBehaviour
     private bool[] ready;
     private TimerObjects timer;
 
+    //Audio
+    private AudioSource source;
+    [SerializeField] private AudioClip[] clips;
+
 
     //UI
     [SerializeField] private Text[] readyText;
@@ -18,6 +22,7 @@ public class ReadyUpMenu : MonoBehaviour
     void Start()
     {
         timer = GetComponent<TimerObjects>();
+        source = GetComponent<AudioSource>();
 
         players = new Player[4];
         ready = new bool[4];
@@ -38,6 +43,12 @@ public class ReadyUpMenu : MonoBehaviour
                 if (p.GetButtonDown("Action"))
                 {
                     ready[p.id] = !ready[p.id];
+                    if(ready[p.id])
+                    {
+                        source.Stop();
+                        source.clip = clips[p.id];
+                        source.Play();
+                    }
                     readyText[p.id].text = ready[p.id] ? "Ready" : "Not Ready";
                 }
             }
@@ -54,6 +65,10 @@ public class ReadyUpMenu : MonoBehaviour
             timer.IncrementTimer();
             int time = (int) timer.CurrentTime;
             countDownText.text = time.ToString();
+            if (timer.TimeExpired())
+            {
+                source.PlayOneShot(clips[4]);
+            }
         }
         
     }
