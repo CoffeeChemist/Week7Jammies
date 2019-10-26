@@ -72,7 +72,7 @@ public class JumpingManager : MonoBehaviour
     {
  
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) // setup for topping objects, input and some general variables
         {
             p_topping[i] = new GameObject("Topping");
             p_topping[i].AddComponent<SpriteRenderer>();
@@ -92,16 +92,15 @@ public class JumpingManager : MonoBehaviour
         cancontinue = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (cancontinue)
+        if (cancontinue) // same deal as in balancing game, results will be "ready" when !cancontinue
         {
             cancontinue = false;
-            if (Random.value >= 0.75f && timer1 >= 3f)
+            if (Random.value >= 0.75f && timer1 >= 3f) //1/4 chance of spawning every frame after 3 secs. The logs spawn very soon after the 3s mark, but it's not perfect 3s so (for me at least lol) it feels less like a timer
             {
                 // Debug.Log("Random chance xddd I am alive");
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++) // setup for log objects
                 {
 
                     logs[i]._object = new GameObject("Log");
@@ -119,17 +118,17 @@ public class JumpingManager : MonoBehaviour
                 timer1 = 0f;
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) //janky jumping mechanics
             {
 
-                if (InAir[i] && timer2[i] < 9.75f)
+                if (InAir[i] && timer2[i] < 9.75f) //start falling (and nail that superhero landing lol)
                 {
 
                     p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.down * 2000, ForceMode2D.Force);
 
                 }
 
-                if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i])
+                if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i]) // return to your place
                 {
                     p_topping[i].GetComponent<Rigidbody2D>().Sleep();
                     InAir[i] = false;
@@ -137,7 +136,7 @@ public class JumpingManager : MonoBehaviour
 
                 }
 
-                if (p_input[i].GetButton("Action") && !InAir[i])
+                if (p_input[i].GetButton("Action") && !InAir[i]) // press to jump
                 {
                     //  Debug.Log("I am pressing a button on controller nr: " + i);
                     p_topping[i].GetComponent<Rigidbody2D>().WakeUp();
@@ -147,7 +146,7 @@ public class JumpingManager : MonoBehaviour
 
                 }
 
-                if (!Alive[i])
+                if (!Alive[i]) // flying off to the skies after death (literally, not afterlife style)
                 {
                     p_topping[i].GetComponent<Rigidbody2D>().AddForce(jumpvec * 15);
                     p_topping[i].GetComponent<Rigidbody2D>().SetRotation((Time.time % 0.6f) * 600);
@@ -158,18 +157,16 @@ public class JumpingManager : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log("Player : " + i);
-                Debug.Log(Alive[i]);
 
 
-                if (!Alive[i] && First_check[i])
+                if (!Alive[i] && First_check[i]) // results are being saved on the array
                 {
                     winners[3 - i] = i;
                     First_check[i] = false;
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) // can the game stil continiue ?
             {
                 if (First_check[i])
                 {
@@ -177,17 +174,18 @@ public class JumpingManager : MonoBehaviour
                 }
             }
 
-            timer1 += Time.deltaTime;
-            for (int i = 0; i < 4; i++)
+            timer1 += Time.deltaTime; // a wild variable in it's natural habitat
+
+            for (int i = 0; i < 4; i++) 
             {
                 timer2[i] -= Time.deltaTime;
             }
         }
-        else if (end_result)
+        else if (end_result) // I like it nicely printed once :v
         {
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log(winners[i]);
+                Debug.Log(winners[i]); // results 
             }
             end_result = false;
         }
