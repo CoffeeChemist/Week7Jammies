@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -14,12 +15,14 @@ public class ButtonScript : MonoBehaviour
     private bool hasPressedActionKey = false;
     private readonly int ID = 0;
     private Player p;
-
+    
+    
 
     void Start()
     {
         tr = child.transform;
         p = ReInput.players.GetPlayer(ID);
+     
 
     }
 
@@ -46,7 +49,7 @@ public class ButtonScript : MonoBehaviour
         if (Is_Selected)
         {
             tr.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-
+            
 
         }
         else
