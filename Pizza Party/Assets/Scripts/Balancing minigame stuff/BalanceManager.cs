@@ -25,8 +25,7 @@ public class BalanceManager : MonoBehaviour
 
     private int direction;
     public int counter = 0;
-
-   
+    
     
     public bool[] fall;
    
@@ -84,70 +83,72 @@ public class BalanceManager : MonoBehaviour
    
     void Update()
     {
-        
-        
+       
 
-        if (force > 0.5f)
-        {
-            Total_push = Vector3.forward * (1 + force);
-        }
-        else
-        {
-            Total_push = Vector3.back * (2 - force);
-        }
 
-        for (int i = 0; i < 4; i++)
-        {
-            if (!fall[i])
+            if (force > 0.5f)
             {
-                vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -1.4f);
-                
-                tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z;
-
-
-                p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)];
-                p_topping[i].GetComponent<Transform>().Rotate(Total_push + vecpp[i]);
+                Total_push = Vector3.forward * (1 + force);
             }
-        }
-         
-
-
-        timer += Time.deltaTime;
-        if (timer >= 0.5f + ((UnityEngine.Random.value) * 0.1f))
-        {
-            force = UnityEngine.Random.value;
-            timer = 0f;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (tip[i] > 30)
+            else
             {
+                Total_push = Vector3.back * (2 - force);
+            }
 
-                if (tip[i] < 180)
+            for (int i = 0; i < 4; i++)
+            {
+                if (!fall[i])
                 {
-                    p_topping[i].GetComponent<SpriteRenderer>().flipX = true;
-                    p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)+1];
-                }
-                if (tip[i] < 320 && tip[0] > 180)
-                {
-                    p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)+1];
+                    vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -1.4f);
+
+                    tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z;
+
+
+                    p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)];
+                    p_topping[i].GetComponent<Transform>().Rotate(Total_push + vecpp[i]);
                 }
             }
-            if (tip[i] > 60 && tip[i] < 180)
-            {
-                fall[i] = true;
-                p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
 
-            }
-            if (tip[i] > 180 && tip[i] < 300)
+
+
+            timer += Time.deltaTime;
+            if (timer >= 0.5f + ((UnityEngine.Random.value) * 0.1f))
             {
-                fall[i] = true;
-                p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+                force = UnityEngine.Random.value;
+                timer = 0f;
             }
-        }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (tip[i] > 30)
+                {
+
+                    if (tip[i] < 180)
+                    {
+                        p_topping[i].GetComponent<SpriteRenderer>().flipX = true;
+                        p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
+                    }
+                    if (tip[i] < 320 && tip[0] > 180)
+                    {
+                        p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
+                    }
+                }
+                if (tip[i] > 60 && tip[i] < 180)
+                {
+                    fall[i] = true;
+                    p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+                    
+
+                }
+                if (tip[i] > 180 && tip[i] < 300)
+                {
+                    fall[i] = true;
+                    p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+                    
+                }
+            }
 
         
-
+       
     }
 }
