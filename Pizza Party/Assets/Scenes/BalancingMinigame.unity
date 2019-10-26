@@ -176,7 +176,11 @@ MonoBehaviour:
   - 0
   - 0
   counter: 0
+  winners: 00000000000000000000000000000000
   fall: 00000000
+  firstcheck: 00000000
+  firststdisplay: 0
+  any1: 0
 --- !u!4 &303040366
 Transform:
   m_ObjectHideFlags: 0

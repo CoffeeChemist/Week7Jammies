@@ -97,18 +97,18 @@ public class BalanceManager : MonoBehaviour
         {
             if (force > 0.5f) // force is random from 0.0 to 1.0
             {
-                Total_push = Vector3.forward * (1 + force); // forward push
+                Total_push = Total_push -  Vector3.forward * ( force * 0.05f) * (Time.time * 0.5f ); // forward push
             }
             else
             {
-                Total_push = Vector3.back * (2 - force); //backward push
+                Total_push = Total_push - Vector3.back * ( force * 0.05f) * (Time.time * 0.5f); //backward push
             }
 
             for (int i = 0; i < 4; i++)
             {
                 if (!fall[i]) // if i is still up
                 {
-                    vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -1.4f); // player input
+                    vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -3f ); // player input
 
                     tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z; // getting the rotation value 
 
@@ -136,6 +136,7 @@ public class BalanceManager : MonoBehaviour
                     {
                         p_topping[i].GetComponent<SpriteRenderer>().flipX = true;
                         p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
+                        
                     }
                     if (tip[i] < 320 && tip[0] > 180)
                     {

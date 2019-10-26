@@ -306,6 +306,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  stopper:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 0f05ef638ab740d41bddbf54e258421b, type: 3}
   - {fileID: 0}
@@ -315,7 +320,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 21300000, guid: 53764c06627be384c80cc097993b5479, type: 3}
   - {fileID: 0}
-  - {fileID: 21300000, guid: dff6f293233a35240893c2d81151decd, type: 3}
+  - {fileID: 21300000, guid: c167984fded0c5a4bbcac0567c562f67, type: 3}
+  - {fileID: 21300000, guid: 58229b23c742e684dafc7c0aec0ec8b8, type: 3}
   Log_start:
   - {x: 60, y: 16.8, z: 0}
   - {x: 70.4, y: 3.8, z: 0}
@@ -327,6 +333,7 @@ MonoBehaviour:
   - {x: -16.1, y: -8.2, z: 0}
   - {x: -4.4, y: -21.2, z: 0}
   forcevec: {x: -2000, y: 0}
+  jumpvec: {x: 0, y: 100}
   InAir: 00000000
   Alive: 00000000
 --- !u!4 &1201086972
@@ -337,7 +344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201086970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -50.7, y: -14.9, z: -17.71875}
+  m_LocalPosition: {x: 120.8, y: -14.9, z: -17.71875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
