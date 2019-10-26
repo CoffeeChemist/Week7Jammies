@@ -7,15 +7,16 @@ public class MenuManagerScript : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject b1;
-    public bool b1_bool;
+    
     public GameObject b2;
-    public bool b2_bool;
+ 
     private readonly int ID = 0;
     private Player p;
-    private bool Is_Up;
-    private bool Can_switch = true;
-    private int clock = 0;
 
+    public bool Selected_button;
+    public bool Cando;
+
+    public float counter;
     //Audio
     private AudioSource source;
     [SerializeField] private AudioClip[] clips;
@@ -23,44 +24,61 @@ public class MenuManagerScript : MonoBehaviour
 
     void Start()
     {
-       source = GetComponent<AudioSource>();
-       b1_bool = GameObject.Find("Play button").GetComponent<ButtonScript>().Is_Selected;
-       b2_bool = GameObject.Find("Quit button").GetComponent<ButtonScript>().Is_Selected;
+        Selected_button = true;
+        Cando = true;
+        source = GetComponent<AudioSource>();
+        counter = 0f;
+
        p = ReInput.players.GetPlayer(ID);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!Can_switch)
-        {
-            if (clock >= 10)
-            {
-                Can_switch = true;
-                clock = 0;
-            }
-            else
-            {
-                clock++;
-            }
-        }
 
-        if (p.GetAxis("VerticalStick") != 0.0f && Can_switch)
+        if (p.GetAxis("VerticalStick") != 0 && Cando)
         {
-            if (b1_bool)
-            {
-                b2_bool = true;
-                b1_bool = false;
-                Can_switch = false;
-            }
-            else
-            {
-                b2_bool = false;
-                b1_bool = true;
-                Can_switch = false;
-            }
-
+            Selected_button = !Selected_button;
+            Cando = false;
             source.PlayOneShot(clips[0]);
         }
+
+        if (Selected_button)
+        {
+            b1.SetActive(true);
+            b2.SetActive(false);
+            
+            //bug.Log("yes");
+        }
+        else
+        {
+            b1.SetActive(false);
+            b2.SetActive(true);
+            
+            //Debug.Log("no");
+        }
+
+        if (p.GetButton("Action"))
+        {
+            if (Selected_button)
+            {
+                SceneManager.LoadScene(1);
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
+
+        if(!Cando)
+        {
+            counter += Time.deltaTime;
+            if (counter > 1)
+            {
+                Cando = true;
+                counter = 0f;
+            }
+        }
+
     }
 }
