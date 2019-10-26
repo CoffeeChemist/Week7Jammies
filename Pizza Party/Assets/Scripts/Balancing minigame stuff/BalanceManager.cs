@@ -10,13 +10,15 @@ public class BalanceManager : MonoBehaviour
     public Vector3 Total_push;
     public Vector3[] vecpp = new Vector3[4];
     public Vector2 gap;
+    public Vector2 knife_gap;
 
 
 
 
     public GameObject[] p_topping = new GameObject[4];
- 
-    public Sprite[] sprites = new Sprite[8];
+    public GameObject[] knifes = new GameObject[4];
+
+    public Sprite[] sprites = new Sprite[9];
     public Player[] p_input = new Player[4];
 
     private float timer = 0f;
@@ -67,11 +69,20 @@ public class BalanceManager : MonoBehaviour
             fall[i] = false;
             firstcheck[i] = true;
             gap = new Vector2 ( - 18 + i * 12,0);
-            p_topping[i] = new GameObject();
+            knife_gap = new Vector2(-18 + i * 12, -9);
+            p_topping[i] = new GameObject("Topping");
             p_topping[i].AddComponent<SpriteRenderer>();    
             p_topping[i].AddComponent<Rigidbody2D>();
             p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 0;
             p_topping[i].GetComponent<Rigidbody2D>().MovePosition(gap);
+
+            knifes[i] = new GameObject("knife");
+            knifes[i].AddComponent<SpriteRenderer>();
+            knifes[i].GetComponent<SpriteRenderer>().sprite = sprites[8];
+            knifes[i].AddComponent<Rigidbody2D>();
+            knifes[i].GetComponent<Rigidbody2D>().gravityScale = 0;
+            knifes[i].GetComponent<Rigidbody2D>().MovePosition(knife_gap);
+
             tip[i] = 0f;
             
         }
@@ -115,6 +126,7 @@ public class BalanceManager : MonoBehaviour
 
                     p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)]; // draw the sprite
                     p_topping[i].GetComponent<Transform>().Rotate(Total_push + vecpp[i]); //rotate by the sum of total_push (random one) and vecpp (player controlled one)
+                    knifes[i].GetComponent<Transform>().Rotate(-1 * (Total_push + vecpp[i]));
                 }
             }
 

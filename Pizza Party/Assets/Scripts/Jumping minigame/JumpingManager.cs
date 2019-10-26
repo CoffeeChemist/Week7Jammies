@@ -27,13 +27,17 @@ public class JumpingManager : MonoBehaviour
 
     public bool[] InAir = new bool[4];
     public bool[] Alive = new bool[4];
+    public bool[] First_check = new bool[4];
+    public bool cancontinue ;
+    public bool end_result;
 
+    public int[] winners = new int[4];
 
-    public struct Log
-    {
+    public struct Log // I really thought there was going to  be more stuff that should be packed neatly into a struct.
+    {                   // and now I'm too lazy+sleepy to change that :v 
         public GameObject _object;
 
-        
+      
         public int _speed;
 
 
@@ -66,12 +70,7 @@ public class JumpingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*
-        for (int i = 0; i < 4; i++)
-        {
-            Log_start[i] = new Vector3(100, 100 - i * 10, 0);
-        }
-        */
+ 
 
         for (int i = 0; i < 4; i++)
         {
@@ -86,80 +85,111 @@ public class JumpingManager : MonoBehaviour
             min_height[i] = Topping_start[i].y;
 
             Alive[i] = true;
-
+            First_check[i] = true;
+            end_result = true;
         }
+        jumpvec = new Vector2(-500, 500);
+        cancontinue = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Random.value >= 0.75f && timer1 >= 3f)
+        if (cancontinue)
         {
-           // Debug.Log("Random chance xddd I am alive");
+            cancontinue = false;
+            if (Random.value >= 0.75f && timer1 >= 3f)
+            {
+                // Debug.Log("Random chance xddd I am alive");
+                for (int i = 0; i < 4; i++)
+                {
+
+                    logs[i]._object = new GameObject("Log");
+                    logs[i]._object.AddComponent<SpriteRenderer>();
+                    logs[i]._object.AddComponent<Rigidbody2D>();
+                    logs[i]._object.AddComponent<LogRemover>();
+                    logs[i]._object.GetComponent<LogRemover>().player = i;
+                    logs[i]._object.GetComponent<Transform>().Translate(Log_start[i]);
+                    logs[i]._object.GetComponent<Rigidbody2D>().gravityScale = 0;
+                    logs[i]._object.GetComponent<SpriteRenderer>().sprite = sprites[8];
+                    logs[i]._speed = 1;
+                    logs[i]._object.GetComponent<Rigidbody2D>().AddForce(forcevec * logs[i]._speed);
+                }
+
+                timer1 = 0f;
+            }
+
             for (int i = 0; i < 4; i++)
             {
 
-                logs[i]._object = new GameObject("Log");
-                logs[i]._object.AddComponent<SpriteRenderer>();
-                logs[i]._object.AddComponent<Rigidbody2D>();
-                logs[i]._object.AddComponent<LogRemover>();
-                logs[i]._object.GetComponent<LogRemover>().player = i;
-                logs[i]._object.GetComponent<Transform>().Translate(Log_start[i]);
-                logs[i]._object.GetComponent<Rigidbody2D>().gravityScale = 0;
-                logs[i]._object.GetComponent<SpriteRenderer>().sprite = sprites[8];
-                logs[i]._speed = 1;
-                logs[i]._object.GetComponent<Rigidbody2D>().AddForce(forcevec * logs[i]._speed);
+                if (InAir[i] && timer2[i] < 9.75f)
+                {
+
+                    p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.down * 2000, ForceMode2D.Force);
+
+                }
+
+                if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i])
+                {
+                    p_topping[i].GetComponent<Rigidbody2D>().Sleep();
+                    InAir[i] = false;
+                    p_topping[i].GetComponent<Rigidbody2D>().MovePosition(Topping_start[i]);
+
+                }
+
+                if (p_input[i].GetButton("Action") && !InAir[i])
+                {
+                    //  Debug.Log("I am pressing a button on controller nr: " + i);
+                    p_topping[i].GetComponent<Rigidbody2D>().WakeUp();
+                    InAir[i] = true;
+                    p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.up * 2000, ForceMode2D.Force);
+                    timer2[i] = 10;
+
+                }
+
+                if (!Alive[i])
+                {
+                    p_topping[i].GetComponent<Rigidbody2D>().AddForce(jumpvec * 15);
+                    p_topping[i].GetComponent<Rigidbody2D>().SetRotation((Time.time % 0.6f) * 600);
+
+                }
+
             }
 
-            timer1 = 0f;
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Log("Player : " + i);
+                Debug.Log(Alive[i]);
+
+
+                if (!Alive[i] && First_check[i])
+                {
+                    winners[3 - i] = i;
+                    First_check[i] = false;
+                }
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (First_check[i])
+                {
+                    cancontinue = true;
+                }
+            }
+
+            timer1 += Time.deltaTime;
+            for (int i = 0; i < 4; i++)
+            {
+                timer2[i] -= Time.deltaTime;
+            }
         }
-
-        for (int i = 0; i < 4; i++)
+        else if (end_result)
         {
-
-            if (InAir[i] && timer2[i] < 9.75f)
+            for (int i = 0; i < 4; i++)
             {
-               
-                p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.down * 2000, ForceMode2D.Force);
-                
+                Debug.Log(winners[i]);
             }
-           
-            if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i] )
-            {
-                p_topping[i].GetComponent<Rigidbody2D>().Sleep();
-                InAir[i] = false;
-                p_topping[i].GetComponent<Rigidbody2D>().MovePosition(Topping_start[i]);
-                
-            }
-
-           if (p_input[i].GetButton("Action") && !InAir[i] )
-            {
-              //  Debug.Log("I am pressing a button on controller nr: " + i);
-                p_topping[i].GetComponent<Rigidbody2D>().WakeUp();
-                   InAir[i] = true;
-                p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.up * 2000, ForceMode2D.Force);
-                timer2[i] = 10;
-
-            }
-           
-
-            
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            Debug.Log("Player : " + i);
-            Debug.Log(Alive[i]);
-        } 
-            
-
-           
-        
-
-        timer1 += Time.deltaTime;
-        for (int i = 0; i < 4; i++)
-        {
-            timer2[i] -= Time.deltaTime;
+            end_result = false;
         }
     }
 }
