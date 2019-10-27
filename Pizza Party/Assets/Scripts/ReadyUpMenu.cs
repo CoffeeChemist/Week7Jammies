@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Rewired;
 
 public class ReadyUpMenu : MonoBehaviour
@@ -68,6 +69,7 @@ public class ReadyUpMenu : MonoBehaviour
             if (timer.TimeExpired())
             {
                 source.PlayOneShot(clips[4]);
+                SceneManager.LoadScene(2);
             }
         }
         

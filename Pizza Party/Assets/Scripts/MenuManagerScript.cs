@@ -58,7 +58,7 @@ public class MenuManagerScript : MonoBehaviour
             //Debug.Log("no");
         }
 
-        if (p.GetButton("Action"))
+        if (p.GetButtonDown("Action"))
         {
             if (Selected_button)
             {

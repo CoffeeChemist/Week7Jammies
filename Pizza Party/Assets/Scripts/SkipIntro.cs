@@ -19,7 +19,7 @@ public class SkipIntro : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (p.GetButton("Action"))
+        if (p.GetButtonDown("Action"))
         {
             SceneManager.LoadScene(5);
 

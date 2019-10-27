@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 8c37a6c2a5043994c96636860aab86f7
+    path: Assets/Scenes/Intro.unity
+    guid: 6c5ebf24a6e91aa4ba559e92a6f35739
   - enabled: 1
     path: Assets/Scenes/ReadyUpMenu.unity
     guid: 18e6e55254a2cd747942789ce5fad818
@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BalancingMinigame.unity
     guid: 0c2e597a5bc3d6e44bb5ad6b0c4384e1
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 8c37a6c2a5043994c96636860aab86f7
   m_configObjects: {}
