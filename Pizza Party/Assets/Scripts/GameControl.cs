@@ -49,7 +49,7 @@ public class GameControl : MonoBehaviour
     {
         for(int i = 0; i < 4; i++)
         {
-            if (roundList[currentRound].winner == i)
+            if (roundList[currentRound-1].winner == i)
             {
                 totalScores[i] += 4;
                 break;

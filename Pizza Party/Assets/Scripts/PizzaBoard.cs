@@ -8,7 +8,7 @@ public class PizzaBoard : MonoBehaviour
 {
     [SerializeField] private GameObject[] toppings;
     private GameControl gc;
-    private int[] minigameIDs = { 3 };
+    private int[] minigameIDs = { 3, 4 };
     private int chosenMinigame;
     private TimerObjects timer;
     private AudioSource source;
@@ -119,6 +119,9 @@ public class PizzaBoard : MonoBehaviour
         {
             case 3:
                 minigameDisplay[1].text = "Dish breaker!";
+                break;
+            case 4:
+                minigameDisplay[1].text = "On the edge of a knife!";
                 break;
         }
     }
