@@ -7,8 +7,7 @@ using System;
 using UnityEngine.UI;
 
 /*
-    - smoke
-
+    - smoke sprites
 */
 
 
@@ -41,7 +40,9 @@ public class Duck_Hunt : MonoBehaviour
     private int points_adder = 100;
     public int[] p_points = new int[4];
 
-
+    //Audio
+    private AudioSource fire;
+    [SerializeField] private AudioClip shootsound;
 
 
 
@@ -84,7 +85,8 @@ public class Duck_Hunt : MonoBehaviour
         obj_tomato.GetComponent<Transform>().Translate(0, 0, 2);
 
 
-        //Init points
+        //Init audio
+        fire = GetComponent<AudioSource>();
     }
 
 
@@ -122,7 +124,6 @@ public class Duck_Hunt : MonoBehaviour
         //Is the tomato outside of the play area ? If, so, reset sprite and position
         if(obj_tomato.transform.position.x > 14 || obj_tomato.transform.position.x < -14 || obj_tomato.transform.position.y > 8 || obj_tomato.transform.position.y < -12 || tomato_killed)
         {
-            tomato_killed = true;
             tomato_pos.x = UnityEngine.Random.Range(-5.0f, 5.0f);
             tomato_pos.y = -6;
             obj_tomato.GetComponent<Rigidbody2D>().Sleep();
@@ -139,23 +140,18 @@ public class Duck_Hunt : MonoBehaviour
             {
                 if (p_input[i].GetButtonDown("Action"))
                 {
-                    if ((Math.Abs(obj_tomato.transform.position.x - p_aims[i].transform.position.x) < 1 && Math.Abs(obj_tomato.transform.position.y - p_aims[i].transform.position.y) < 1) && p_aims[i].transform.position.y > 4 )
+                    fire.PlayOneShot(shootsound);
+                    if ((Math.Abs(obj_tomato.transform.position.x - p_aims[i].transform.position.x) < 1 && Math.Abs(obj_tomato.transform.position.y - p_aims[i].transform.position.y) < 1) && (p_aims[i].transform.position.y > -4) && (p_aims[i].transform.position.x < 7 || p_aims[i].transform.position.x > -7) )
                     {
                         tomato_killed = true;
                         obj_tomato.GetComponent<Rigidbody2D>().Sleep();
                         obj_tomato.GetComponent<SpriteRenderer>().sprite = tomato[1];
                         p_points[i] += points_adder;
-                        
 
                         Debug.Log("Player " +i +" has scored " +p_points[i]);
                     }
                 }
             }
         }
-
-
-
-
-
     }
 }
