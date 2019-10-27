@@ -13,7 +13,7 @@ public class SkipIntro : MonoBehaviour
     void Start()
     {
         p = ReInput.players.GetPlayer(0);
-        timer = 15;
+        timer = 900;
     }
 
     // Update is called once per frame
