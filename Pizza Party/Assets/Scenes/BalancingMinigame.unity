@@ -156,7 +156,13 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   gap: {x: 0, y: 0}
+  knife_gap: {x: 0, y: 0}
   p_topping:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  knifes:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -170,13 +176,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: aa39b98d26b00ff4f85e22c27ff98d2b, type: 3}
   - {fileID: 21300000, guid: 53764c06627be384c80cc097993b5479, type: 3}
   - {fileID: 21300000, guid: d9233f925d31cea47aeb845fab5f7784, type: 3}
+  - {fileID: 21300000, guid: 0776d36f275694240bbb20e9e853bd0d, type: 3}
   tip:
   - 0
   - 0
   - 0
   - 0
   counter: 0
+  winners: 00000000000000000000000000000000
   fall: 00000000
+  firstcheck: 00000000
+  firststdisplay: 0
+  any1: 0
 --- !u!4 &303040366
 Transform:
   m_ObjectHideFlags: 0
@@ -185,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303040364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.44275418, y: 0.15265608, z: -0.6796875}
+  m_LocalPosition: {x: -17.79, y: -13.99, z: -0.6796875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -268,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315349348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -1.1, z: -10}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
