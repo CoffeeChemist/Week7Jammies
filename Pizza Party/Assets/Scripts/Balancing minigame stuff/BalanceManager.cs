@@ -248,7 +248,7 @@ public class BalanceManager : MonoBehaviour
             }
 
 
-            source.PlayOneShot(clips[winners[0]]);
+            
             
              
 
@@ -259,12 +259,23 @@ public class BalanceManager : MonoBehaviour
             firststdisplay = false;
 
             gc.roundList[gc.currentRound - 1].winner = winners[0];
-            SceneManager.LoadScene(2);
-            
+
+
+
+            StartCoroutine(EndGame());
         }
     }
 
         
 
-    
+    IEnumerator EndGame()
+    {
+        source.PlayOneShot(clips[winners[0]]);
+        yield return new WaitForSeconds(4);
+        SceneManager.LoadScene(2);
+
+
+    }
+
+
 }
