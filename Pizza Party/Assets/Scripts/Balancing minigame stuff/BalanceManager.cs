@@ -13,11 +13,17 @@ public class BalanceManager : MonoBehaviour
     public Vector2 gap;
     public Vector2 knife_gap;
 
+    private AudioSource source;
+    [SerializeField] private AudioClip[] clips;
 
+    
 
 
     public GameObject[] p_topping = new GameObject[4];
     public GameObject[] knifes = new GameObject[4];
+    public GameObject background;
+    public GameControl gc;
+
 
     public Sprite[] sprites = new Sprite[9];
     public Player[] p_input = new Player[4];
@@ -66,6 +72,11 @@ public class BalanceManager : MonoBehaviour
     {
 
         //general setup
+
+        source = GetComponent<AudioSource>();
+
+       gc = FindObjectOfType<GameControl>();
+
         for (int i = 0; i < 4; i++)
         {
             fall[i] = false;
@@ -88,6 +99,8 @@ public class BalanceManager : MonoBehaviour
             tip[i] = 0f;
             
         }
+
+        background.SetActive(true);
         any1 = true;
         firststdisplay = true;
         
@@ -185,14 +198,14 @@ public class BalanceManager : MonoBehaviour
                 {
                     fall[i] = true;
                     p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
-
+                    knifes[i].GetComponent<Rigidbody2D>().gravityScale = 0.5f;
 
                 }
                 if (tip[i] > 180 && tip[i] < 300)
                 {
                     fall[i] = true;
                     p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
-
+                    knifes[i].GetComponent<Rigidbody2D>().gravityScale = 0.5f;
                 }
             }
 
@@ -220,11 +233,20 @@ public class BalanceManager : MonoBehaviour
         }
         else if (firststdisplay) // I"m lazy and only want to call this once
         {
+
+            source.PlayOneShot(clips[winners[0]]);
+            
+             
+
             for (int i = 0; i < 4; i++)
             {
                 Debug.Log(winners[i]); //winners[] contins the results of the game
-            }
+            } 
             firststdisplay = false;
+
+            gc.roundList[gc.currentRound - 1].winner = winners[0];
+            SceneManager.LoadScene(2);
+            
         }
     }
 
