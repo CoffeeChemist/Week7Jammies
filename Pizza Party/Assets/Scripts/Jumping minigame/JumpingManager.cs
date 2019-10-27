@@ -30,6 +30,8 @@ public class JumpingManager : MonoBehaviour
     public bool[] First_check = new bool[4];
     public bool cancontinue ;
     public bool end_result;
+    public bool[] Onwayback = new bool[4];
+
 
     public int[] winners = new int[4];
 
@@ -87,6 +89,7 @@ public class JumpingManager : MonoBehaviour
             Alive[i] = true;
             First_check[i] = true;
             end_result = true;
+            Onwayback[i] = false;
         }
         jumpvec = new Vector2(-500, 500);
         cancontinue = true;
@@ -125,24 +128,28 @@ public class JumpingManager : MonoBehaviour
                 {
 
                     p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.down * 2000, ForceMode2D.Force);
+                    Onwayback[i] = true;
 
                 }
 
-                if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i]) // return to your place
+                if (p_topping[i].GetComponent<Rigidbody2D>().position.y < min_height[i] +2  && Onwayback[i]) // return to your place
                 {
                     p_topping[i].GetComponent<Rigidbody2D>().Sleep();
                     InAir[i] = false;
+                    Onwayback[i] = false;
                     p_topping[i].GetComponent<Rigidbody2D>().MovePosition(Topping_start[i]);
+                    p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i)];
 
                 }
 
-                if (p_input[i].GetButton("Action") && !InAir[i]) // press to jump
+                if ((p_input[i].GetButton("Action") || Input.GetKeyDown(KeyCode.Space)) && !InAir[i]) // press to jump
                 {
                     //  Debug.Log("I am pressing a button on controller nr: " + i);
                     p_topping[i].GetComponent<Rigidbody2D>().WakeUp();
                     InAir[i] = true;
                     p_topping[i].GetComponent<Rigidbody2D>().AddForce(Vector2.up * 2000, ForceMode2D.Force);
                     timer2[i] = 10;
+                    p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
 
                 }
 

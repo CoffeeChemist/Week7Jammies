@@ -312,14 +312,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   sprites:
+  - {fileID: 21300000, guid: dfb74e6a80d6b3947b47abfe7f80e3cf, type: 3}
   - {fileID: 21300000, guid: 0f05ef638ab740d41bddbf54e258421b, type: 3}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 8771054e369a0ab4a9dc64ceeb23bd02, type: 3}
   - {fileID: 21300000, guid: f16b7eabc099d84478eeaf6900271cf4, type: 3}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 414d94ac3bd3177408e58322c18e2388, type: 3}
   - {fileID: 21300000, guid: ccf2945395790d2409f712a197ceb4ec, type: 3}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 41105d9dfa1691848a99f7cd9141e39b, type: 3}
   - {fileID: 21300000, guid: 53764c06627be384c80cc097993b5479, type: 3}
-  - {fileID: 0}
   - {fileID: 21300000, guid: c167984fded0c5a4bbcac0567c562f67, type: 3}
   - {fileID: 21300000, guid: 58229b23c742e684dafc7c0aec0ec8b8, type: 3}
   Log_start:
@@ -336,6 +336,11 @@ MonoBehaviour:
   jumpvec: {x: 0, y: 100}
   InAir: 00000000
   Alive: 00000000
+  First_check: 00000000
+  cancontinue: 0
+  end_result: 0
+  Onwayback: 00000000
+  winners: 00000000000000000000000000000000
 --- !u!4 &1201086972
 Transform:
   m_ObjectHideFlags: 0

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 using UnityEngine.SceneManagement;
+using System;
 
 public class BalanceManager : MonoBehaviour
 {
-
+    public Vector3[] UpAndDown = new Vector3[4];
     public Vector3 Total_push;
     public Vector3[] vecpp = new Vector3[4];
     public Vector2 gap;
@@ -23,6 +24,7 @@ public class BalanceManager : MonoBehaviour
 
     private float timer = 0f;
     public  float[] tip = new float[4];
+   // public float[] prev_tip = new float[4];
     private float force;
 
     
@@ -98,7 +100,11 @@ public class BalanceManager : MonoBehaviour
 
         
     }
-
+    /// <summary>
+    /// 
+    /// Wanted to make the toppings go down a little bit, so the stay on top of the knifes, but I have no idea how to do it and what I tried failed
+    /// 
+    /// </summary>
 
     void Update()
     {
@@ -109,18 +115,33 @@ public class BalanceManager : MonoBehaviour
             if (force > 0.5f) // force is random from 0.0 to 1.0
             {
                 Total_push = Total_push -  Vector3.forward * ( force * 0.05f) * (Time.time * 0.5f ); // forward push
+                
+                
             }
             else
             {
                 Total_push = Total_push - Vector3.back * ( force * 0.05f) * (Time.time * 0.5f); //backward push
+
+            }
+
+            if (Total_push.x >= 2) // this way the push should be more fair, but please test it
+            {
+                Total_push.x = Vector3.forward.x * 2 - Total_push.x * 0.1f;
+            }
+            else if (Total_push.x <= -2)
+            {
+                Total_push.x = Vector3.back.x * 2 - Total_push.x * 0.1f;
             }
 
             for (int i = 0; i < 4; i++)
             {
+                
                 if (!fall[i]) // if i is still up
                 {
                     vecpp[i] = new Vector3(0.0f, 0.0f, p_input[i].GetAxis("HorizontalStick") * -3f ); // player input
+                    UpAndDown[i] = Vector3.down * (tip[i] * 0.1f);
 
+                    //prev_tip[i] = tip[i];
                     tip[i] = p_topping[i].GetComponent<Transform>().rotation.eulerAngles.z; // getting the rotation value 
 
 
@@ -141,6 +162,9 @@ public class BalanceManager : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
+
+
+
                 if (tip[i] > 30) // change the sprites and flip depending on the tip
                 {
 
@@ -148,11 +172,13 @@ public class BalanceManager : MonoBehaviour
                     {
                         p_topping[i].GetComponent<SpriteRenderer>().flipX = true;
                         p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
+                       
                         
                     }
                     if (tip[i] < 320 && tip[0] > 180)
                     {
                         p_topping[i].GetComponent<SpriteRenderer>().sprite = sprites[Sprite_Decode(i) + 1];
+                        
                     }
                 }
                 if (tip[i] > 60 && tip[i] < 180) // fall if the tip is too high
