@@ -5,10 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-/*
-    - smoke sprites
-*/
-
 
 
 public class Duck_Hunt : MonoBehaviour
@@ -42,10 +38,14 @@ public class Duck_Hunt : MonoBehaviour
     //Gameplay stuff
     private int points_adder = 100;
     public int[] p_points = new int[4];
+    private bool end = true;
 
     //Audio
     private AudioSource fire;
     [SerializeField] private AudioClip shootsound;
+
+    //UI
+
 
     public GameControl gc;
     private TimerObjects timer;
@@ -187,18 +187,20 @@ public class Duck_Hunt : MonoBehaviour
         {
             //Play winner
             int pMax = p_points[0];
-            gc.roundList[gc.currentRound].winner = 0;
+            gc.roundList[gc.currentRound-1].winner = 0;
             for (int i = 0; i <4; i++)
             {
                 if(p_points[i] > pMax)
                 {
                     pMax = p_points[i];
-                    gc.roundList[gc.currentRound].winner = i;
+                    gc.roundList[gc.currentRound-1].winner = i;
                 }
             }
-
-            fire.PlayOneShot(announcerClips[gc.roundList[gc.currentRound].winner]);
-            SceneManager.LoadScene(2);
+            if(end)
+            {
+                StartCoroutine(EndGame());
+                end = false; 
+            }
         }
 
 
@@ -219,5 +221,12 @@ public class Duck_Hunt : MonoBehaviour
 
         Debug.Log("Player " + i + " has scored " + p_points[i]);
         yield return new WaitForSeconds(2);
+    }
+
+    IEnumerator EndGame()
+    {
+        fire.PlayOneShot(announcerClips[gc.roundList[gc.currentRound-1].winner]);
+        yield return new WaitForSeconds(4);
+        SceneManager.LoadScene(2);
     }
 }
