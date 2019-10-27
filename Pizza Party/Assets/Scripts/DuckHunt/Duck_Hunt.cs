@@ -168,7 +168,7 @@ public class Duck_Hunt : MonoBehaviour
         {
             //Play winner
             int pMax = p_points[0];
-            gc.roundList[gc.currentRound].winner = 0;
+            gc.roundList[gc.currentRound-1].winner = 0;
             for (int i = 0; i <4; i++)
             {
                 if(p_points[i] > pMax)

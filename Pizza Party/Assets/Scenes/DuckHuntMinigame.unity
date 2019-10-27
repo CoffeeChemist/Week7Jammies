@@ -1578,10 +1578,10 @@ MonoBehaviour:
   gc: {fileID: 0}
   timerText: {fileID: 846050342}
   announcerClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 5618c464181c03e4893ebd5fd4fc1abe, type: 3}
+  - {fileID: 8300000, guid: dc4318fb902f42143b82ef1d76a1875b, type: 3}
+  - {fileID: 8300000, guid: e7822129d6e03114fa4fc85d58650641, type: 3}
+  - {fileID: 8300000, guid: 5acfb57ad8b22fe44be38591bda7ac40, type: 3}
 --- !u!4 &1884238504
 Transform:
   m_ObjectHideFlags: 0
