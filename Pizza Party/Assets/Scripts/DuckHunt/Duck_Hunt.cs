@@ -179,7 +179,7 @@ public class Duck_Hunt : MonoBehaviour
             }
 
             fire.PlayOneShot(announcerClips[gc.roundList[gc.currentRound].winner]);
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(2);
         }
 
 

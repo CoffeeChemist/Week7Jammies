@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PizzaBoard : MonoBehaviour
 {
-    private GameObject toppings;
+    [SerializeField] private GameObject[] toppings;
     private GameControl gc;
     private int[] minigameIDs = { 3 };
     private int chosenMinigame;
@@ -19,7 +19,6 @@ public class PizzaBoard : MonoBehaviour
 
     void Start()
     {
-        //toppings = GetComponentInChildren<GameObject>();
         timer = GetComponent<TimerObjects>();
         gc = FindObjectOfType<GameControl>();
         
@@ -63,9 +62,9 @@ public class PizzaBoard : MonoBehaviour
     {
         for(int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < gc.totalScores[i] - 1; i++)
+            for (int j = 0; j < gc.totalScores[i]; i++)
             {
-                toppings.transform.GetChild(i).GetChild(j).gameObject.SetActive(true);
+                toppings[i].transform.GetChild(j).gameObject.SetActive(true);
             }
         }
     }
