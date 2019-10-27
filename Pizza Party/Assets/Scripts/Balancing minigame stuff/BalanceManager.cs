@@ -97,7 +97,7 @@ public class BalanceManager : MonoBehaviour
             knifes[i].GetComponent<Rigidbody2D>().MovePosition(knife_gap);
 
             tip[i] = 0f;
-            
+            winners[i] = 999;   
         }
 
         background.SetActive(true);
@@ -206,6 +206,9 @@ public class BalanceManager : MonoBehaviour
                     fall[i] = true;
                     p_topping[i].GetComponent<Rigidbody2D>().gravityScale = 1;
                     knifes[i].GetComponent<Rigidbody2D>().gravityScale = 0.5f;
+                   
+                        
+                  
                 }
             }
 
@@ -214,14 +217,14 @@ public class BalanceManager : MonoBehaviour
                 if (fall[i] && firstcheck[i]) // if you fell and it is the first time you end up here
                 {
                     winners[place] = i; // get the place 4th place = winners[3]. 1st place == winners[0]
-                    //Debug.Log(winners[place]);
+                   // Debug.Log(winners[place] + "place is player no. "+ i);
                     place--; 
                     firstcheck[i] = false; // making sure you won't take 2 places on the table
                     any1 =0; // someone has fallen. maybe it was the last one
                 }
             }
 
-
+    
             for (int i = 0; i < 4; i++) // check if anyone is still to declare their loss
             {
                 if (firstcheck[i]) 
@@ -234,14 +237,25 @@ public class BalanceManager : MonoBehaviour
         else if (firststdisplay) // I"m lazy and only want to call this once
         {
 
+            for (int i = 0; i < 4; i++)
+            {
+                if (!fall[i])
+                {
+                    winners[0] = i;
+                }
+
+
+            }
+
+
             source.PlayOneShot(clips[winners[0]]);
             
              
 
-            for (int i = 0; i < 4; i++)
-            {
-                Debug.Log(winners[i]); //winners[] contins the results of the game
-            } 
+            
+            
+                Debug.Log(winners[0]); //winners[] contins the results of the game
+            
             firststdisplay = false;
 
             gc.roundList[gc.currentRound - 1].winner = winners[0];
