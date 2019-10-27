@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DuckHuntMinigame.unity
     guid: b6b70d5616f3ed948b011e512f572fef
+  - enabled: 1
+    path: Assets/Scenes/BalancingMinigame.unity
+    guid: 0c2e597a5bc3d6e44bb5ad6b0c4384e1
   m_configObjects: {}
