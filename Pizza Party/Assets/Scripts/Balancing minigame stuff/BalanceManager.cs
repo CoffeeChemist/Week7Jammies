@@ -41,7 +41,7 @@ public class BalanceManager : MonoBehaviour
     public bool[] fall = new bool[4];
     public bool[] firstcheck = new bool[4];
     public bool firststdisplay;
-    public bool any1 ;
+    public int any1 ;
 
 
 
@@ -101,7 +101,7 @@ public class BalanceManager : MonoBehaviour
         }
 
         background.SetActive(true);
-        any1 = true;
+        any1 = 4;
         firststdisplay = true;
         
         
@@ -123,17 +123,17 @@ public class BalanceManager : MonoBehaviour
     {
 
 
-        if (any1) // if the game can continue (if anyone is still up)
+        if (any1 > 1) // if the game can continue (if anyone is still up)
         {
             if (force > 0.5f) // force is random from 0.0 to 1.0
             {
-                Total_push = Total_push -  Vector3.forward * ( force * 0.05f) * (Time.time * 0.5f ); // forward push
+                Total_push = Total_push -  Vector3.forward * ( force * 0.05f) * (Time.deltaTime) * 90; // forward push
                 
                 
             }
             else
             {
-                Total_push = Total_push - Vector3.back * ( force * 0.05f) * (Time.time * 0.5f); //backward push
+                Total_push = Total_push - Vector3.back * ( force * 0.05f) * (Time.deltaTime ) * 90; //backward push
 
             }
 
@@ -217,7 +217,7 @@ public class BalanceManager : MonoBehaviour
                     //Debug.Log(winners[place]);
                     place--; 
                     firstcheck[i] = false; // making sure you won't take 2 places on the table
-                    any1 = false; // someone has fallen. maybe it was the last one
+                    any1 =0; // someone has fallen. maybe it was the last one
                 }
             }
 
@@ -226,7 +226,7 @@ public class BalanceManager : MonoBehaviour
             {
                 if (firstcheck[i]) 
                 {
-                    any1 = true; // game can continue if someone is not a loser
+                    any1 ++; // game can continue if someone is not a loser
                 }
             }
 
