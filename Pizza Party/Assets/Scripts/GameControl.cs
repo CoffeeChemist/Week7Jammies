@@ -14,7 +14,7 @@ public class GameControl : MonoBehaviour
 
     void Awake()
     {
-        if(instance != null && instance != this)
+        if (instance != null && instance != this)
         {
             Destroy();
         }
@@ -39,49 +39,26 @@ public class GameControl : MonoBehaviour
     private void SetupRounds()
     {
         roundList = new Round[totalRounds];
-        for(int i = 0; i < totalRounds; i++)
+        for (int i = 0; i < totalRounds; i++)
         {
-            roundList[i].hasDrawn = false;
-            roundList[i].numDrawn = 0;
-            roundList[i].playerRanking = new int[4];
+            roundList[i].winner = -1;
         }
     }
 
     public void AddRound()
     {
-        //for each player
         for(int i = 0; i < 4; i++)
         {
-            //for each entry
-            for(int j = 0; j < 4; j++)
+            if (roundList[currentRound].winner == i)
             {
-                //Check if entry is the player
-                if(roundList[currentRound].playerRanking[j] == i)
-                {
-                    //Check if the case is a draw score
-                    if (j <= roundList[currentRound].numDrawn - 1)
-                    {
-                        totalScores[i] += 4;
-                    }
-                    else
-                    {
-                        switch (j)
-                        {
-                            case 1: totalScores[i] += 3; break;
-                            case 2: totalScores[i] += 2; break;
-                            case 3: totalScores[i] += 1; break;
-                        }
-                    }
-                    break;
-                }
+                totalScores[i] += 4;
+                break;
             }
         }
     }
-}
 
-public struct Round
-{
-    public bool hasDrawn;
-    public int numDrawn;
-    public int[] playerRanking;
+    public struct Round
+    {
+        public int winner;
+    }
 }

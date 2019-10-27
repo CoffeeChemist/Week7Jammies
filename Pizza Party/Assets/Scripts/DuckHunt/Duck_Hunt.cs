@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Rewired;
-using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /*
-    - smoke
-
+    - smoke sprites
 */
 
 
@@ -32,7 +29,7 @@ public class Duck_Hunt : MonoBehaviour
     public Vector2 tomato_pos;
     private bool tomato_killed = false;
     private bool tomato_iswaiting = true;
-    public Vector2  tomato_force;
+    public Vector2 tomato_force;
 
     //physics stuff
     private float gravity = 9.8f;
@@ -41,7 +38,14 @@ public class Duck_Hunt : MonoBehaviour
     private int points_adder = 100;
     public int[] p_points = new int[4];
 
+    //Audio
+    private AudioSource fire;
+    [SerializeField] private AudioClip shootsound;
 
+    public GameControl gc;
+    private TimerObjects timer;
+    [SerializeField] Text timerText;
+    [SerializeField] AudioClip[] announcerClips;
 
 
 
@@ -49,6 +53,8 @@ public class Duck_Hunt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gc = FindObjectOfType<GameControl>();
+        timer = GetComponent<TimerObjects>();
         //Init players
         for (int i = 0; i < 4; i++)
         {
@@ -84,7 +90,8 @@ public class Duck_Hunt : MonoBehaviour
         obj_tomato.GetComponent<Transform>().Translate(0, 0, 2);
 
 
-        //Init points
+        //Init audio
+        fire = GetComponent<AudioSource>();
     }
 
 
@@ -96,65 +103,84 @@ public class Duck_Hunt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Updating Aims postions
-        for (int i = 0; i < 4; i++)
+        if (!timer.TimeExpired())
         {
-            //get the Input from Vertical axis and Horizontal Axis
-            userinput = new Vector2(p_input[i].GetAxis("HorizontalStick") * speed * Time.deltaTime, p_input[i].GetAxis("VerticalStick") * speed * Time.deltaTime);
-            //update the position
-            p_aims[i].GetComponent<Transform>().Translate(userinput);
-        }
-
-
-        //Do we need a new tomato ?
-        if(tomato_iswaiting)
-            tomato_force = new Vector2(UnityEngine.Random.Range(-10.0f, 10.0f), 110.0f);
-        tomato_iswaiting = false;
-        tomato_killed = false;
-        //Adding the force to the tomato
-        if (!tomato_killed)
-        {
-            obj_tomato.GetComponent<Rigidbody2D>().WakeUp();
-            obj_tomato.GetComponent<Rigidbody2D>().AddForce(tomato_force);
-            if (tomato_force.y > -gravity)
-                tomato_force.y -= gravity;
-        }
-        //Is the tomato outside of the play area ? If, so, reset sprite and position
-        if(obj_tomato.transform.position.x > 14 || obj_tomato.transform.position.x < -14 || obj_tomato.transform.position.y > 8 || obj_tomato.transform.position.y < -12 || tomato_killed)
-        {
-            tomato_killed = true;
-            tomato_pos.x = UnityEngine.Random.Range(-5.0f, 5.0f);
-            tomato_pos.y = -6;
-            obj_tomato.GetComponent<Rigidbody2D>().Sleep();
-            obj_tomato.GetComponent<SpriteRenderer>().sprite = tomato[0];
-            obj_tomato.GetComponent<Rigidbody2D>().MovePosition(tomato_pos);
-            tomato_iswaiting = true;
-        }
-
-
-        //When press ACTION, does it hit ? If it does, update points
-        for (int i = 0; i < 4; i++)
-        {
-            if(!tomato_killed)
+            timer.IncrementTimer();
+            timerText.text = ((int)timer.CurrentTime).ToString();
+            //Updating Aims postions
+            for (int i = 0; i < 4; i++)
             {
-                if (p_input[i].GetButtonDown("Action"))
-                {
-                    if ((Math.Abs(obj_tomato.transform.position.x - p_aims[i].transform.position.x) < 1 && Math.Abs(obj_tomato.transform.position.y - p_aims[i].transform.position.y) < 1) && p_aims[i].transform.position.y > 4 )
-                    {
-                        tomato_killed = true;
-                        obj_tomato.GetComponent<Rigidbody2D>().Sleep();
-                        obj_tomato.GetComponent<SpriteRenderer>().sprite = tomato[1];
-                        p_points[i] += points_adder;
-                        
+                //get the Input from Vertical axis and Horizontal Axis
+                userinput = new Vector2(p_input[i].GetAxis("HorizontalStick") * speed * Time.deltaTime, p_input[i].GetAxis("VerticalStick") * speed * Time.deltaTime);
+                //update the position
+                p_aims[i].GetComponent<Transform>().Translate(userinput);
+            }
 
-                        Debug.Log("Player " +i +" has scored " +p_points[i]);
+
+            //Do we need a new tomato ?
+            if (tomato_iswaiting)
+                tomato_force = new Vector2(UnityEngine.Random.Range(-500.0f, 500.0f), 900.0f);
+            tomato_iswaiting = false;
+            tomato_killed = false;
+            //Adding the force to the tomato
+            if (!tomato_killed)
+            {
+                obj_tomato.GetComponent<Rigidbody2D>().WakeUp();
+                obj_tomato.GetComponent<Rigidbody2D>().AddForce(tomato_force * Time.deltaTime);
+                if (tomato_force.y > -gravity)
+                    tomato_force.y -= gravity;
+            }
+            //Is the tomato outside of the play area ? If, so, reset sprite and position
+            if (obj_tomato.transform.position.x > 14 || obj_tomato.transform.position.x < -14 || obj_tomato.transform.position.y > 8 || obj_tomato.transform.position.y < -12 || tomato_killed)
+            {
+                tomato_pos.x = UnityEngine.Random.Range(-5.0f, 5.0f);
+                tomato_pos.y = -6;
+                obj_tomato.GetComponent<Rigidbody2D>().Sleep();
+                obj_tomato.GetComponent<SpriteRenderer>().sprite = tomato[0];
+                obj_tomato.GetComponent<Rigidbody2D>().MovePosition(tomato_pos);
+                tomato_iswaiting = true;
+            }
+
+
+            //When press ACTION, does it hit ? If it does, update points
+            for (int i = 0; i < 4; i++)
+            {
+                if (!tomato_killed)
+                {
+                    if (p_input[i].GetButtonDown("Action"))
+                    {
+                        fire.PlayOneShot(shootsound);
+                        if ((Math.Abs(obj_tomato.transform.position.x - p_aims[i].transform.position.x) < 1 && Math.Abs(obj_tomato.transform.position.y - p_aims[i].transform.position.y) < 1) && (p_aims[i].transform.position.y > -4) && (p_aims[i].transform.position.x < 7 || p_aims[i].transform.position.x > -7))
+                        {
+                            tomato_killed = true;
+                            obj_tomato.GetComponent<Rigidbody2D>().Sleep();
+                            obj_tomato.GetComponent<SpriteRenderer>().sprite = tomato[1];
+                            p_points[i] += points_adder;
+
+                            Debug.Log("Player " + i + " has scored " + p_points[i]);
+                        }
                     }
                 }
             }
         }
 
+        else
+        {
+            //Play winner
+            int pMax = p_points[0];
+            gc.roundList[gc.currentRound].winner = 0;
+            for (int i = 0; i <4; i++)
+            {
+                if(p_points[i] > pMax)
+                {
+                    pMax = p_points[i];
+                    gc.roundList[gc.currentRound].winner = i;
+                }
+            }
 
-
+            fire.PlayOneShot(announcerClips[gc.roundList[gc.currentRound].winner]);
+            SceneManager.LoadScene(3);
+        }
 
 
     }
