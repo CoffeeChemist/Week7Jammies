@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PizzaBoard : MonoBehaviour
 {
@@ -8,11 +10,17 @@ public class PizzaBoard : MonoBehaviour
     private GameControl gc;
     private int[] minigameIDs = { 3 };
     private int chosenMinigame;
+    private TimerObjects timer;
+
+    //UI
+    [SerializeField] private Text[] minigameDisplay;
+    [SerializeField] private Text timeCounter;
 
 
     void Start()
     {
-        toppings = GetComponentInChildren<GameObject>();
+        //toppings = GetComponentInChildren<GameObject>();
+        timer = GetComponent<TimerObjects>();
         gc = FindObjectOfType<GameControl>();
         
         if(gc.currentRound != 0)
@@ -26,6 +34,9 @@ public class PizzaBoard : MonoBehaviour
         if(gc.currentRound < gc.totalRounds)
         {
             ChooseMinigame();
+            timer.ResetClock();
+            timeCounter.gameObject.SetActive(true);
+
         }
         else
         {
@@ -34,11 +45,18 @@ public class PizzaBoard : MonoBehaviour
             //play winning sounds
             //exit game
         }
+        
     }
 
     void Update()
     {
-        //
+        timer.IncrementTimer();
+        timeCounter.text = ((int)timer.CurrentTime).ToString();
+        if (timer.TimeExpired())
+        {
+            Debug.Log("Scene loaded: " + chosenMinigame);
+            SceneManager.LoadScene(chosenMinigame);
+        }
     }
 
     private void DecorateBoard()
@@ -54,6 +72,14 @@ public class PizzaBoard : MonoBehaviour
 
     private void ChooseMinigame()
     {
-        chosenMinigame = Random.Range(0, minigameIDs.Length);
+        chosenMinigame = minigameIDs[Random.Range(0, minigameIDs.Length)];
+        foreach (Text t in minigameDisplay) { t.gameObject.SetActive(true); }
+
+        switch (chosenMinigame)
+        {
+            case 3:
+                minigameDisplay[1].text = "Fruit Shoot!";
+                break;
+        }
     }
 }

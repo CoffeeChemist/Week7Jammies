@@ -10,11 +10,29 @@ public class TimerObjects : MonoBehaviour
 
     public float CurrentTime { get => currentTime; set => currentTime = value; }
 
+    void Start()
+    {
+        if (countDown)
+        {
+            currentTime = timeLimit;
+        }
+    }
+
     public bool TimeExpired()
     {
-        if (CurrentTime >= timeLimit)
+        if (countDown)
         {
-            return true;
+            if (CurrentTime <= 0)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (CurrentTime >= timeLimit)
+            {
+                return true;
+            }
         }
         return false;
     }

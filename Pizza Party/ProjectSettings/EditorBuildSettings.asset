@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ReadyUpMenu.unity
     guid: 18e6e55254a2cd747942789ce5fad818
+  - enabled: 1
+    path: Assets/Scenes/Pizza Board.unity
+    guid: e2c2b65cd9a65ec4397064c6564df835
+  - enabled: 1
+    path: Assets/Scenes/DuckHuntMinigame.unity
+    guid: b6b70d5616f3ed948b011e512f572fef
   m_configObjects: {}
